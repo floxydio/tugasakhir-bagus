@@ -19,6 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+    {{-- @notifyCss --}}
+
 
 </head>
 
@@ -31,7 +33,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route("main")}}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -43,18 +45,18 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{route("main")}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
-                <a class="nav-link" href="charts.html">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{route("absen")}}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Absen</span></a>
             </li>
-            <li class="nav-item">
-               <a class="nav-link" href="charts.html">
+            <li class="nav-item active">
+               <a class="nav-link" href="{{route("user")}}">
                    <i class="fas fa-fw fa-chart-area"></i>
                    <span>User</span></a>
            </li>
@@ -250,9 +252,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Cookie::get("name")}}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="https://ui-avatars.com/api/?name={{Cookie::get("name")}}&rounded=true">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -311,7 +313,44 @@
                         <td>{{$item->alamat}}</td>
                         <td>{{$item->divisi}}</td>
                         <td>
-                           <button type="button" class="btn btn-success">Edit</button>
+                           <button  class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{$item->id}}">Edit</button>
+                           <div class="modal fade" id="modalEdit{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Ubah Data</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form method="POST" action="{{route('user.update')}}">
+                                   @csrf
+         <div class="form-group">
+           <label for="exampleInputEmail1">Nama</label>
+           <input type="text" class="form-control" id="exampleInputEmail1" name="nama" aria-describedby="emailHelp" value="{{old("nama", $item->nama)}}" placeholder="Masukkan Nama...">
+
+         </div>
+         <div class="form-group">
+          <label for="exampleInputEmail1">ID Card</label>
+          <input type="text" class="form-control" name="id_card" value="{{old("id_card", $item->id_card)}}" placeholder="Masukkan ID Card...">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Alamat</label>
+          <input type="text" class="form-control" value="{{old("alamat", $item->alamat)}}" name="alamat" placeholder="Masukkan Alamat...">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Divisi</label>
+          <input type="text" class="form-control" value="{{old("divisi", $item->divisi)}}" name="divisi" placeholder="Masukkan Divisi...">
+        </div>
+        <button  type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
                         </td>
                      </tbody>
                      @endforeach
@@ -328,6 +367,7 @@
                          </div>
                          <div class="modal-body">
                            <form method="POST" action="{{route('user.create')}}">
+                            @csrf
   <div class="form-group">
     <label for="exampleInputEmail1">Nama</label>
     <input type="text" class="form-control" id="exampleInputEmail1" name="nama" aria-describedby="emailHelp" placeholder="Masukkan Nama...">
@@ -345,13 +385,16 @@
    <label for="exampleInputEmail1">Divisi</label>
    <input type="text" class="form-control" name="divisi" placeholder="Masukkan Divisi...">
  </div>
- <button type="button" type="submit" class="btn btn-primary">Save changes</button>
+ <button  type="submit" class="btn btn-primary">Save changes</button>
 </form>
                          </div>
 
                        </div>
                      </div>
                    </div>
+
+ {{-- Edit Modal --}}
+
 
                     <!-- Content Row -->
 
@@ -398,11 +441,14 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="{{route("logout")}}">Logout</a>
                 </div>
             </div>
         </div>
     </div>
+
+
+    @notifyJs
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset("vendor/jquery/jquery.min.js")}}"></script>

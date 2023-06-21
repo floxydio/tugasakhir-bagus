@@ -20,12 +20,26 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset("css/sb-admin-2.min.css")}}" rel="stylesheet">
-
+    {{-- @notifyCss --}}
 </head>
 
 <body class="bg-gradient-primary">
 
    <div class="container">
+
+    @if ($message = Session::get('Success'))
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
+    @endif
+
+    @if ($message = Session::get('Gagal'))
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
+    @endif
 
       <!-- Outer Row -->
       <div class="row justify-content-center">
@@ -34,7 +48,7 @@
 
               <div class="card o-hidden border-0 shadow-lg my-5">
                   <div class="card-body p-0">
-                      <!-- Nested Row within Card Body -->
+
                       <div class="row">
                           <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                           <div class="col-lg-6">
@@ -43,25 +57,28 @@
                                       <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                   </div>
                                   <form class="user" method="POST" action="{{route('login.save')}}">
+                                    @csrf
                                       <div class="form-group">
-                                          <input type="email" class="form-control form-control-user"
+                                          <input type="text" name="nama" class="form-control form-control-user"
                                               id="exampleInputEmail" aria-describedby="emailHelp"
                                               placeholder="Enter Name...">
                                       </div>
                                       <div class="form-group">
-                                          <input type="password" name="id_card" class="form-control form-control-user"
-                                              id="exampleInputPassword" placeholder="Enter Id Card...">
+                                          <input type="password" name="password" class="form-control form-control-user"
+                                              id="exampleInputPassword" placeholder="Enter Password...">
                                       </div>
+
                                       <div class="form-group">
-                                          <div class="custom-control custom-checkbox small">
-                                              <input type="checkbox" class="custom-control-input" id="customCheck">
-                                              <label class="custom-control-label" for="customCheck">Remember
-                                                  Me</label>
-                                          </div>
+                                        <select name="option_value" class="form-control">
+                                            <option value="0">Select Login Type: </option>
+                                            <option value="1">As Admin</option>
+                                            <option value="2">As User</option>
+                                          </select>
+
                                       </div>
-                                      <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                      <button type="submit" class="btn btn-primary btn-user btn-block">
                                           Login
-                                      </a>
+                                      </button>
                                       <hr>
 
                                   </form>
@@ -77,7 +94,6 @@
       </div>
 
   </div>
-
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>

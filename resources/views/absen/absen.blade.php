@@ -31,7 +31,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route("main")}}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -43,18 +43,18 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{route("main")}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item active">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="{{route("absen")}}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Absen</span></a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" href="charts.html">
+               <a class="nav-link" href="{{route("user")}}">
                    <i class="fas fa-fw fa-chart-area"></i>
                    <span>User</span></a>
            </li>
@@ -250,9 +250,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Cookie::get("name")}}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="https://ui-avatars.com/api/?name={{Cookie::get("name")}}&rounded=true">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -288,9 +288,22 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard - Absen</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Tambah Absen</a>
+                        <a href="{{route('absen.save')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Absen Hari Ini</a>
                     </div>
+                    @if ($message = Session::get('Success'))
+				<div class="alert alert-success alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>{{ $message }}</strong>
+				</div>
+				@endif
+
+				@if ($message = Session::get('Gagal'))
+				<div class="alert alert-danger alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>{{ $message }}</strong>
+				</div>
+				@endif
 
                     <table class="table table-bordered">
                      <thead>
@@ -321,6 +334,7 @@
                      </tbody>
                      @endforeach
                    </table>
+
 
                     <!-- Content Row -->
 
@@ -367,7 +381,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="{{route("logout")}}">Logout</a>
                 </div>
             </div>
         </div>

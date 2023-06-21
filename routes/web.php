@@ -3,6 +3,7 @@
 use App\Http\Controllers\Absen;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthAccount;
+use App\Http\Controllers\Main;
 use App\Http\Controllers\Users;
 
 /*
@@ -16,23 +17,22 @@ use App\Http\Controllers\Users;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get("/sign-in", [AuthAccount::class,'index'])->name("login");
 Route::post("login/save", [AuthAccount::class, 'loginIndex'])->name("login.save");
+Route::get("/logout",[AuthAccount::class,"logoutSession"])->name("logout");
 
 // Dashboard Main
 
-Route::get("/main", function() {
-  return view("dashboard/main");
-});
+Route::get("/", [Main::class,'index'])->name("main");
+
 
 // Absen
 
-Route::get("/absen", [Absen::class, "index"]);
+Route::get("/absen", [Absen::class, "index"])->name("absen");
+Route::get("/create-absen", [Absen::class, "createAbsen"])->name("absen.save");
 
 // User
-Route::get("/user", [Users::class, "index"]);
+Route::get("/user", [Users::class, "index"])->name("user");
 Route::post("create-user", [Users::class, "createAccount"])->name("user.create");
+Route::post("/user/edit/{id}", [Users::class, "updateAccountById"])->name("user.update");
