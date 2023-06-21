@@ -324,7 +324,7 @@
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  <form method="POST" action="{{route('user.update')}}">
+                                  <form method="POST" action="{{route('user.update',$item->id)}}">
                                    @csrf
          <div class="form-group">
            <label for="exampleInputEmail1">Nama</label>

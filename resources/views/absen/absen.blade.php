@@ -311,7 +311,7 @@
                         <th>No</th>
                          <th>Nama</th>
                          <th>ID Card</th>
-                         <th>Date</th>
+                         <th>Tanggal</th>
                          <th>Keterangan</th>
                          <th>Alpha</th>
                          <th>Action</th>
