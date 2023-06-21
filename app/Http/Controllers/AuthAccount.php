@@ -33,7 +33,7 @@ class AuthAccount extends Controller {
             return redirect("/sign-in");
          }
       } else if($inputValue == "2") {
-         $loginCheck = DB::table("tbl_user")->where("nama", $request->input("nama"))->where("id_card", $request->input("id_card"))->first();
+         $loginCheck = DB::table("tbl_user")->where("nama", $request->input("nama"))->where("id_card", $request->input("password"))->first();
          if($loginCheck) {
             Cookie::queue("id_card", $loginCheck->id_card);
             Cookie::queue("name", $loginCheck->nama);
