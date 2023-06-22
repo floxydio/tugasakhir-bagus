@@ -20,6 +20,23 @@ class Absen extends Controller {
       }
    }
 
+   public function updateAbsen($id) {
+      $data = [
+         "date" => $_POST["date"],
+         "keterangan" => $_POST["keterangan"],
+         "alpha" => $_POST["alpha"],
+      ];
+      dd($data);
+      $updateAbsen = DB::table("tbl_absen")->where("id", $id)->update($data);
+      if($updateAbsen) {
+         Session::flash("Success","Berhasil Update Absen");
+         return redirect("/absen");
+      } else {
+         Session::flash("Gagal","Gagal Update Absen");
+         return redirect("/absen");
+      }
+   }
+
    public function createAbsen() {
       $data = [
          "nama" => Cookie::get("name"),
@@ -40,10 +57,7 @@ class Absen extends Controller {
       } else {
          Session::flash("Gagal","Hari ini sudah absen");
          return redirect("/absen");
-
       }
-
-
    }
 }
 

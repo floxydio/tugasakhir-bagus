@@ -286,11 +286,25 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+                    
+                    @if(Cookie::get("role") == "admin")
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard - Absen</h1>
                         <a href="{{route('absen.save')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Absen Hari Ini</a>
+                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
+                    @endif
+                   @if (Cookie::get("role") == "user")
+                   <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Dashboard - Absen</h1>
+                    <a href="{{route('absen.save')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Absen Hari Ini</a>
+                </div>
+                       
+                   @endif
+
+
+
                     @if ($message = Session::get('Success'))
 				<div class="alert alert-success alert-block">
 					<button type="button" class="close" data-dismiss="alert">×</button>
@@ -327,7 +341,45 @@
                         <td>{{$item->keterangan == "" ? "Empty": $item->keterangan}}</td>
                         <td>{{$item->alpha == "0" ? "-" : "Tidak masuk / Izin"}}</td>
                         <td>
-                           <button type="button" class="btn btn-success">Edit</button>
+                            <button  class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{$item->id}}">Edit</button>
+                            <div class="modal fade" id="modalEdit{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                 <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Ubah Data</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                   </button>
+                                 </div>
+                                 <div class="modal-body">
+                                   <form method="POST" action="{{route('absen.update',$item->id)}}">
+                                    @csrf
+     
+         <div class="form-group">
+           <label for="exampleInputEmail1">Date</label>
+           <input type="text" class="form-control" value="{{old("date", $item->date)}}" name="date" placeholder="Masukkan Tanggal...">
+           <small id="emailHelp" class="form-text text-muted">Tanggal-Bulan-Tahun -> Contoh 03-04-2022</small>
+
+         </div>
+         <div class="form-group">
+           <label for="exampleInputEmail1">Keterangan</label>
+           <input type="text" class="form-control" value="{{old("keterangan", $item->keterangan)}}" name="keterangan" placeholder="Masukkan Keterangan...">
+         </div>
+         
+         <div class="form-group">
+            <label for="exampleInputEmail1">Alpha</label>
+            <input type="text" class="form-control" value="{{old("alpha", $item->alpha)}}" name="alpha" placeholder="Masukkan Status Alpha...">
+            <small id="emailHelp" class="form-text text-muted">0 -> Absen, 1 -> Izin / Tidak Absen</small>
+ 
+        </div>
+         <button  type="submit" class="btn btn-primary">Save changes</button>
+         </form>
+                                 </div>
+ 
+                               </div>
+                             </div>
+                           </div>
+ 
 
                         </td>
 

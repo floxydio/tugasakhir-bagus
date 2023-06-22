@@ -17,6 +17,7 @@ use App\Http\Controllers\Users;
 |
 */
 
+// Auth Account
 
 Route::get("/sign-in", [AuthAccount::class,'index'])->name("login");
 Route::post("login/save", [AuthAccount::class, 'loginIndex'])->name("login.save");
@@ -31,8 +32,10 @@ Route::get("/", [Main::class,'index'])->name("main");
 
 Route::get("/absen", [Absen::class, "index"])->name("absen");
 Route::get("/create-absen", [Absen::class, "createAbsen"])->name("absen.save");
+Route::post("/absen/edit/{id}", [Absen::class, "updateAbsen"])->name("absen.update");
 
 // User
+
 Route::get("/user", [Users::class, "index"])->name("user");
 Route::post("create-user", [Users::class, "createAccount"])->name("user.create");
 Route::post("/user/edit/{id}", [Users::class, "updateAccountById"])->name("user.update");
