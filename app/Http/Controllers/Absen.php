@@ -1,13 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
-
+use App\Exports\AbsenExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class Absen extends Controller {
    public function index() {
@@ -43,7 +43,7 @@ class Absen extends Controller {
          "id_card" => Cookie::get("id_card"),
          "date" => date("d-m-Y")
       ];
-      $checkAbsenToday = DB::select("SELECT * FROM tbl_absen WHERE date = ?", [date("d-m-Y")]);
+      $checkAbsenToday = DB::select("SELECT * FROM tbl_absen");
       if($checkAbsenToday == null || $checkAbsenToday == []) {
          $createAbsen = DB::table("tbl_absen")->insert($data);
          if($createAbsen) {
@@ -58,6 +58,10 @@ class Absen extends Controller {
          Session::flash("Gagal","Hari ini sudah absen");
          return redirect("/absen");
       }
+   }
+
+   public function generateDownloadAbsen() { 
+      return Excel::download(new AbsenExport, 'absen.xlsx');
    }
 }
 

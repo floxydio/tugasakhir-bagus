@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Users extends Controller {
    public function index() {
@@ -42,5 +43,9 @@ class Users extends Controller {
        return redirect("/user");
 
       }
+   }
+
+   public function generateExcelUser() {
+      return Excel::download(new UserExport, 'user.xlsx');
    }
 }
