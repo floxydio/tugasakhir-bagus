@@ -26,7 +26,6 @@ class Absen extends Controller {
          "keterangan" => $_POST["keterangan"],
          "alpha" => $_POST["alpha"],
       ];
-      dd($data);
       $updateAbsen = DB::table("tbl_absen")->where("id", $id)->update($data);
       if($updateAbsen) {
          Session::flash("Success","Berhasil Update Absen");
@@ -43,7 +42,7 @@ class Absen extends Controller {
          "id_card" => Cookie::get("id_card"),
          "date" => date("d-m-Y")
       ];
-      $checkAbsenToday = DB::select("SELECT * FROM tbl_absen");
+      $checkAbsenToday = DB::select("SELECT * FROM tbl_absen WHERE date = ?", [date("d-m-Y")]);
       if($checkAbsenToday == null || $checkAbsenToday == []) {
          $createAbsen = DB::table("tbl_absen")->insert($data);
          if($createAbsen) {
