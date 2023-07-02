@@ -27,7 +27,8 @@ class AuthAccount extends Controller {
          if($loginCheck) {
             Cookie::queue("name", $loginCheck->username);
             Cookie::queue("role", "admin");
-           return redirect("/");
+            Cookie::queue("id", $loginCheck->id);
+            return redirect("/");
          } else {
             Session::flash("Gagal","Email Atau Password Salah");
             return redirect("/sign-in");
@@ -38,6 +39,7 @@ class AuthAccount extends Controller {
             Cookie::queue("id_card", $loginCheck->id_card);
             Cookie::queue("name", $loginCheck->nama);
             Cookie::queue("role", "user");
+            Cookie::queue("id", $loginCheck->id);
 
            return  redirect("/");
          } else {
@@ -56,6 +58,8 @@ class AuthAccount extends Controller {
    public function logoutSession() {
       Cookie::queue(Cookie::forget("id_card"));
      Cookie::queue( Cookie::forget("name"));
+       Cookie::queue( Cookie::forget("role"));
+         Cookie::queue( Cookie::forget("id"));
       return redirect("/sign-in");
 
    }
